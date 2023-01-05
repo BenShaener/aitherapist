@@ -4,3 +4,4 @@ svc_port: 3080
 app_port: 3080
 namespace: default
 image: harbor.services.edge.wrightcode.io:9443/apps/aitherapist-models:pack 
+openAiKey: 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

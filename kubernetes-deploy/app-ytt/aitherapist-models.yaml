@@ -20,9 +20,13 @@ spec:
       containers:
       - name: aitherapist-models
         image: #@ data.values.image
+        imagePullPolicy: Always
         ports:
         - name: http
           containerPort: #@ data.values.app_port
+        env:
+        - name: OPENAI_KEY
+          value: #@ data.values.openAiKey
 ---
 apiVersion: v1
 kind: Service
