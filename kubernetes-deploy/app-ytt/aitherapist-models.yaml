@@ -1,0 +1,51 @@
+#@ load("@ytt:data", "data")
+
+#@ def labels():
+app: aitherapist
+#@ end
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: #@ data.values.namespace
+  name: aitherapist-models
+spec:
+  selector:
+    matchLabels: #@ labels()
+  template:
+    metadata:
+      labels: #@ labels()
+    spec:
+      containers:
+      - name: aitherapist-models
+        image: #@ data.values.image
+        ports:
+        - name: http
+          containerPort: #@ data.values.app_port
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: #@ data.values.namespace
+  name: aitherapist-models
+  labels: #@ labels()
+spec:
+  ports:
+  - port: #@ data.values.svc_port
+    targetPort: #@ data.values.app_port
+  type: ClusterIP
+  selector: #@ labels()
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: aitherapist-ingress
+  namespace: #@ data.values.namespace
+spec:
+  routes:
+  - services:
+    - name: aitherapist-models
+      port: 3080
+  virtualhost:
+    fqdn: aitherapist-models.apps.edge.wrightcode.io

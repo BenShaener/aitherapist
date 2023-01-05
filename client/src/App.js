@@ -6,23 +6,28 @@ import ChatBox from './ChatBox'
 
 function App() {
 
-  useEffect(() => {
-    getEngines();
-  }, [])
-
   const [chatInput, setChatInput] = useState("");
   const [models, setModels] = useState([]);
   const [temperature, setTemperature] = useState(0.5);
   const [currentModel, setCurrentModel] = useState("text-davinci-003");
   const [chatLog, setChatLog] = useState([]);
+  const modelsUrl = process.env.MODELS_URL || "http://aitherapist-models.apps.edge.wrightcode.io";
+  const logger = require('./logger');
+
+  useEffect(() => {
+    const _modelsUrl = process.env.MODELS_URL || "http://aitherapist-models.apps.edge.wrightcode.io";
+    getEngines(_modelsUrl);
+  }, [])
 
   // clear chats
   function clearChat(){
     setChatLog([]);
   }
 
-  function getEngines(){
-    fetch("http://localhost:3080/models")
+  function getEngines(url){
+    //fetch("http://localhost:3080/models")
+    logger.info("Using models URL: ", url);
+    fetch(url + "/models")
     .then(res => res.json())
     .then(data => {
       console.log(data.models.data)
@@ -43,8 +48,9 @@ function App() {
     setChatLog(chatLogNew)
     // fetch response to the api combining the chat log array of messages and seinding it as a message to localhost:3000 as a post
     const messages = chatLogNew.map((message) => message.message).join("\n")
-    
-    const response = await fetch("http://localhost:3080/", {
+    //console.log("Using models URL: ", modelsUrl); 
+    logger.info("Using models URL: ", modelsUrl);
+    const response = await fetch(modelsUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

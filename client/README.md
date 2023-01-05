@@ -1,70 +1,38 @@
-# Getting Started with Create React App
+# Automatically build a container image
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- Install commandline utility "pack" following this guide https://buildpacks.io/docs/tools/pack/
+- Install Docker using appropriate steps for your OS https://docker-docs.netlify.app/install/#supported-platforms
+- Build your app from commandline at same directory where package.json is located
+`pack build aitherapist-ui --buildpack paketo-buildpacks/nodejs --builder paketobuildpacks/builder:full`
+- output should end with similar output
 
-## Available Scripts
+`Lots of stuff.... then
+===> EXPORTING
+Reusing layer 'paketo-buildpacks/ca-certificates:helper'
+Reusing layer 'paketo-buildpacks/node-engine:node'
+Adding layer 'paketo-buildpacks/npm-install:launch-modules'
+Adding layer 'launch.sbom'
+Adding 1/1 app layer(s)
+Reusing layer 'launcher'
+Adding layer 'config'
+Reusing layer 'process-types'
+Adding label 'io.buildpacks.lifecycle.metadata'
+Adding label 'io.buildpacks.build.metadata'
+Adding label 'io.buildpacks.project.metadata'
+Setting default process type 'web'
+Saving aitherapist-ui...
+*** Images (9613c251aae9):
+      aitherapist-ui
+Reusing cache layer 'paketo-buildpacks/node-engine:node'
+Adding cache layer 'paketo-buildpacks/npm-install:build-modules'
+Adding cache layer 'paketo-buildpacks/npm-install:npm-cache'
+Reusing cache layer 'paketo-buildpacks/node-module-bom:cyclonedx-node-module'
+Adding cache layer 'cache.sbom'
+Successfully built image aitherapist-ui` 
 
-In the project directory, you can run:
+# Run your application
 
-### `npm start`
+`docker run -p 3000:3000 -d -e MODELS_URL=http://localhost:3080 aitherapist-ui`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

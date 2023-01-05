@@ -1,0 +1,6 @@
+#@data/values-schema
+---
+svc_port: 3000
+app_port: 3000
+namespace: default
+image: harbor.services.edge.wrightcode.io:9443/apps/aitherapist-ui:pack 
